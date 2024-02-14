@@ -36,3 +36,8 @@ var typeAliasMap = map[string][]string{
 func (m Migrator) GetTypeAliases(databaseTypeName string) []string {
 	return typeAliasMap[databaseTypeName]
 }
+
+func (m Migrator) CurrentDatabase() (name string) {
+	m.DB.Raw("SELECT current_schema()").Row().Scan(&name)
+	return
+}
