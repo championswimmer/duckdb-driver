@@ -1,4 +1,4 @@
-module github.com/c0deltin/duckdb-driver
+module github.com/championswimmer/duckdb-driver
 
 go 1.18
 
