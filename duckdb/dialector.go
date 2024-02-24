@@ -179,9 +179,20 @@ func (d Dialector) DataTypeOf(field *schema.Field) string {
 		return "timestamptz" // todo distinguish between timestamp with and without time zone
 	case schema.Bytes:
 		return "blob"
-	default:
-		return string(field.DataType) // todo handle custom types
 	}
+	// Clickhouse compatible data types
+	// https://clickhouse.tech/docs/en/sql-reference/data-types/
+	if string(field.DataType) == "LowCardinality(String)" {
+		return "varchar"
+	}
+	if string(field.DataType) == "IPv4" {
+		return "varchar(15)"
+	}
+	if string(field.DataType) == "IPv6" {
+		return "varchar(39)"
+	}
+
+	return string(field.DataType)
 }
 
 func (d Dialector) DefaultValueOf(field *schema.Field) clause.Expression {
